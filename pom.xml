@@ -3,85 +3,105 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.jenkins-ci.plugins</groupId>
-        <artifactId>plugin</artifactId>
-        <version>5.17</version> <!-- Use stable, available version -->
-    </parent>
+  <groupId>io.jenkins.plugins</groupId>
+  <artifactId>pipeline-cloudwatch-logs</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>hpi</packaging>
 
-    <groupId>io.jenkins.plugins</groupId>
-    <artifactId>pipeline-cloudwatch-logs</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>hpi</packaging>
-    <name>Pipeline CloudWatch Logs Plugin</name>
-    <description>Send Jenkins pipeline logs to AWS CloudWatch.</description>
-    <url>https://github.com/tagorech022/pipeline-cloudwatch-logs-plugin</url>
+  <name>Pipeline CloudWatch Logs Plugin</name>
+  <url>https://github.com/your-org/pipeline-cloudwatch-logs-plugin</url>
 
-    <licenses>
-        <license>
-            <name>The MIT License</name>
-            <url>https://opensource.org/licenses/MIT</url>
-        </license>
-    </licenses>
+  <properties>
+    <jenkins.version>2.387.3</jenkins.version>
+    <java.level>11</java.level>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
 
-    <developers>
-        <developer>
-            <id>tagore</id>
-            <name>Chittibomma Tagore</name>
-            <email>tagore@example.com</email>
-        </developer>
-    </developers>
+  <parent>
+    <groupId>org.jenkins-ci.plugins</groupId>
+    <artifactId>plugin</artifactId>
+    <version>4.65</version>
+    <relativePath/>
+  </parent>
 
-    <scm>
-        <connection>scm:git:https://github.com/tagorech022/pipeline-cloudwatch-logs-plugin.git</connection>
-        <developerConnection>scm:git:git@github.com:tagorech022/pipeline-cloudwatch-logs-plugin.git</developerConnection>
-        <url>https://github.com/tagorech022/pipeline-cloudwatch-logs-plugin</url>
-    </scm>
+  <repositories>
+    <repository>
+      <id>jenkins-releases</id>
+      <url>https://repo.jenkins-ci.org/releases</url>
+    </repository>
+    <repository>
+      <id>incrementals</id>
+      <url>https://repo.jenkins-ci.org/incrementals</url>
+    </repository>
+  </repositories>
 
-    <properties>
-        <jenkins.version>2.426.1</jenkins.version>
-        <java.level>11</java.level>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+  <dependencies>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>credentials</artifactId>
+      <version>[2.3,)</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins.workflow</groupId>
+      <artifactId>workflow-step-api</artifactId>
+      <version>[2.24,)</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13.2</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
-    <repositories>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.jenkins-ci.tools</groupId>
+        <artifactId>maven-hpi-plugin</artifactId>
+        <version>3.42</version>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>consume-incrementals</id>
+      <repositories>
         <repository>
-            <id>repo.jenkins-ci.org</id>
-            <url>https://repo.jenkins-ci.org/public/</url>
+          <id>incrementals</id>
+          <url>https://repo.jenkins-ci.org/incrementals</url>
         </repository>
-    </repositories>
+      </repositories>
+    </profile>
 
-    <dependencies>
-        <!-- Jenkins plugin dependencies -->
-        <dependency>
-            <groupId>org.jenkins-ci.plugins</groupId>
-            <artifactId>credentials</artifactId>
-            <version>1251.vb_870f4f5d61c</version>
-        </dependency>
-
-        <!-- AWS SDK if needed -->
-        <dependency>
-            <groupId>software.amazon.awssdk</groupId>
-            <artifactId>cloudwatch</artifactId>
-            <version>2.20.66</version>
-        </dependency>
-
-        <!-- Optional logging -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.36</version>
-        </dependency>
-
-        <!-- Testing -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+    <profile>
+      <id>might-produce-incrementals</id>
+      <activation>
+        <property>
+          <name>env.CHANGE_ID</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>io.jenkins.tools.incrementals</groupId>
+            <artifactId>incrementals-publisher</artifactId>
+            <version>1.0-beta-5</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>incrementals</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
 </project>
