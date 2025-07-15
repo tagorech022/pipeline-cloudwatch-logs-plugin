@@ -1,6 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -12,26 +13,37 @@
 
     <groupId>io.jenkins.plugins</groupId>
     <artifactId>pipeline-cloudwatch-logs-plugin</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>hpi</packaging>
 
-    <name>CloudWatch Pipeline Log Plugin</name>
-    <description>Push pipeline logs to AWS CloudWatch via Fluentd</description>
+    <name>Pipeline CloudWatch Logs Plugin</name>
+    <description>Send Jenkins pipeline logs to AWS CloudWatch via Fluentd</description>
+    <url>https://github.com/your-org/pipeline-cloudwatch-logs-plugin</url>
 
     <properties>
-        <java.level>17</java.level>
         <jenkins.version>2.414.3</jenkins.version>
+        <java.level>17</java.level>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <repositories>
         <repository>
-            <id>repo.jenkins-ci.org</id>
+            <id>maven-central</id>
+            <url>https://repo1.maven.org/maven2</url>
+        </repository>
+        <repository>
+            <id>jenkins-releases</id>
+            <url>https://repo.jenkins-ci.org/releases/</url>
+        </repository>
+        <repository>
+            <id>jenkins-public</id>
             <url>https://repo.jenkins-ci.org/public/</url>
         </repository>
     </repositories>
 
     <dependencies>
-        <!-- Jenkins workflow -->
+
+        <!-- Jenkins Workflow Plugins -->
         <dependency>
             <groupId>org.jenkins-ci.plugins.workflow</groupId>
             <artifactId>workflow-api</artifactId>
@@ -47,24 +59,38 @@
             <artifactId>workflow-support</artifactId>
             <version>839.v35e2736cfd5c</version>
         </dependency>
+        <dependency>
+            <groupId>org.jenkins-ci.plugins.workflow</groupId>
+            <artifactId>workflow-cps</artifactId>
+            <version>3836.v305192405b_c4</version>
+        </dependency>
 
-        <!-- AWS SDK -->
+        <!-- AWS SDK for CloudWatch -->
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-logs</artifactId>
             <version>1.12.730</version>
         </dependency>
 
-        <!-- Fluentd -->
+        <!-- Fluentd (Fluency) -->
         <dependency>
             <groupId>org.komamitsu.fluency</groupId>
             <artifactId>fluency-core</artifactId>
             <version>2.7.0</version>
         </dependency>
+
+        <!-- AWS Global Config (Optional) -->
+        <dependency>
+            <groupId>io.jenkins.plugins</groupId>
+            <artifactId>aws-global-configuration</artifactId>
+            <version>70.v0b_8fd8f4386d</version>
+        </dependency>
+
     </dependencies>
 
     <build>
         <plugins>
+            <!-- Java 17 support -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -76,4 +102,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>
