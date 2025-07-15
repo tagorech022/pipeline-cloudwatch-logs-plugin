@@ -8,66 +8,74 @@
     <parent>
         <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>plugin</artifactId>
-        <version>4.65</version>
-        <relativePath/>
+        <version>5.17</version> <!-- Use stable, available version -->
     </parent>
 
     <groupId>io.jenkins.plugins</groupId>
     <artifactId>pipeline-cloudwatch-logs</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>hpi</packaging>
+    <name>Pipeline CloudWatch Logs Plugin</name>
+    <description>Send Jenkins pipeline logs to AWS CloudWatch.</description>
+    <url>https://github.com/tagorech022/pipeline-cloudwatch-logs-plugin</url>
 
-    <name>Pipeline: AWS CloudWatch Logs</name>
-    <url>https://github.com/jenkinsci/pipeline-cloudwatch-logs-plugin</url>
-    <description>Sends Pipeline logs to AWS CloudWatch Logs.</description>
+    <licenses>
+        <license>
+            <name>The MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>tagore</id>
+            <name>Chittibomma Tagore</name>
+            <email>tagore@example.com</email>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:https://github.com/tagorech022/pipeline-cloudwatch-logs-plugin.git</connection>
+        <developerConnection>scm:git:git@github.com:tagorech022/pipeline-cloudwatch-logs-plugin.git</developerConnection>
+        <url>https://github.com/tagorech022/pipeline-cloudwatch-logs-plugin</url>
+    </scm>
 
     <properties>
-        <jenkins.version>2.387.1</jenkins.version>
-        <java.level>8</java.level>
-        <pluginFirstClassLoader>true</pluginFirstClassLoader>
+        <jenkins.version>2.426.1</jenkins.version>
+        <java.level>11</java.level>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>repo.jenkins-ci.org</id>
+            <url>https://repo.jenkins-ci.org/public/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
-        <!-- Jenkins core and pipeline API -->
-        <dependency>
-            <groupId>org.jenkins-ci.plugins.workflow</groupId>
-            <artifactId>workflow-step-api</artifactId>
-            <version>2.24</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jenkins-ci.plugins.workflow</groupId>
-            <artifactId>workflow-api</artifactId>
-            <version>2.46</version>
-        </dependency>
-
-        <!-- AWS SDK for CloudWatch Logs -->
-        <dependency>
-            <groupId>software.amazon.awssdk</groupId>
-            <artifactId>cloudwatchlogs</artifactId>
-            <version>2.20.115</version>
-        </dependency>
-
-        <dependency>
-            <groupId>software.amazon.awssdk</groupId>
-            <artifactId>auth</artifactId>
-            <version>2.20.115</version>
-        </dependency>
-
-        <!-- Required for credentials and secrets -->
+        <!-- Jenkins plugin dependencies -->
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
             <artifactId>credentials</artifactId>
-            <version>2.3.19</version>
+            <version>1251.vb_870f4f5d61c</version>
         </dependency>
 
+        <!-- AWS SDK if needed -->
         <dependency>
-            <groupId>org.jenkins-ci.plugins</groupId>
-            <artifactId>aws-credentials</artifactId>
-            <version>1.29</version>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>cloudwatch</artifactId>
+            <version>2.20.66</version>
         </dependency>
 
-        <!-- Optional testing libraries -->
+        <!-- Optional logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.36</version>
+        </dependency>
+
+        <!-- Testing -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -75,18 +83,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.jenkins-ci.tools</groupId>
-                <artifactId>maven-hpi-plugin</artifactId>
-                <extensions>true</extensions>
-                <configuration>
-                    <pluginFirstClassLoader>true</pluginFirstClassLoader>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>
